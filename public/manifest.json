@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "iNotebook",
+  "name": "iNotebook - Your notes secured on cloud",
   "icons": [
     {
       "src": "favicon.ico",
