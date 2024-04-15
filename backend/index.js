@@ -1,10 +1,14 @@
 const connectToMongo = require("./db");
 const express = require("express");
-
+const cors = require("cors");
 connectToMongo();
 
 const app = express();
 const port = 5000;
+
+// cors used for using localhost api 5000 (different server than react)
+app.use(cors());
+app.use(express.json());
 
 //use middleware to use request body
 app.use(express.json());
