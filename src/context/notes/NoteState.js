@@ -8,7 +8,7 @@ const NoteState = (props) => {
   const [notes, setNotes] = useState(notesInitial);
 
   // Get Notes
-  const getNotes = async (title, description, tag) => {
+  const getNotes = async () => {
     // API call
     const response = await fetch(`${host}/api/notes/fetchallnotes`, {
       method: "GET",
@@ -86,7 +86,6 @@ const NoteState = (props) => {
         "auth-token":
           "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjYxMTI2ZWJmMGRkNDBhZjNjM2RlOTE3In0sImlhdCI6MTcxMjQzNjI2OH0.crBhNUSuxIa101djWuN6Nn2wFCB3ZkiaQVSP-I9Y2gY",
       },
-      body: JSON.stringify({ title, description, tag }),
     });
     const json = response.json();
 
