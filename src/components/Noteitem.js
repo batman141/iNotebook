@@ -2,9 +2,9 @@ import { React, useContext } from "react";
 import noteContext from "../context/notes/noteContext";
 
 const Noteitem = (props) => {
-  const { note } = props;
+  const { note, updateNote } = props;
   const context = useContext(noteContext);
-  const { editNote, deleteNote } = context;
+  const { deleteNote } = context;
 
   return (
     <div className="col-md-3">
@@ -21,11 +21,12 @@ const Noteitem = (props) => {
             <i
               className="fa-regular fa-pen-to-square mx-2"
               onClick={() => {
-                editNote(note._id);
+                updateNote(note);
               }}
             ></i>
           </div>
           <p className="card-text">{note.description}</p>
+          <p className="card-text">{note.tag}</p>
         </div>
       </div>
     </div>

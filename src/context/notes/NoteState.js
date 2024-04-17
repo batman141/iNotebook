@@ -18,7 +18,7 @@ const NoteState = (props) => {
           "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjYxMTI2ZWJmMGRkNDBhZjNjM2RlOTE3In0sImlhdCI6MTcxMjQzNjI2OH0.crBhNUSuxIa101djWuN6Nn2wFCB3ZkiaQVSP-I9Y2gY",
       },
     });
-
+    //TODO
     const json = await response.json();
     console.log(json);
     setNotes(json);
@@ -36,6 +36,9 @@ const NoteState = (props) => {
       },
       body: JSON.stringify({ title, description, tag }),
     });
+    //TODO
+    const json = await response.json();
+    console.log(json);
 
     // Logic to add in client
     const note = {
@@ -55,7 +58,7 @@ const NoteState = (props) => {
   const editNote = async (id, title, description, tag) => {
     // API call
     const response = await fetch(`${host}/api/notes/updatenote/${id}`, {
-      method: "POST",
+      method: "PUT",
       headers: {
         "Content-Type": "application/json",
         "auth-token":
@@ -63,16 +66,22 @@ const NoteState = (props) => {
       },
       body: JSON.stringify({ title, description, tag }),
     });
-    const json = response.json();
+    //TODO
+    const json = await response.json();
+    console.log(json);
 
     // Logic to edit in client
-    for (let index = 0; index < notes.length; index++) {
+    // Creates a DEEP COPY of notes because cannot just set individual notes like done below
+    const newNotes = JSON.parse(JSON.stringify(notes));
+    for (let index = 0; index < newNotes.length; index++) {
       const element = notes[index];
       if (element._id === id) {
-        element.title = title;
-        element.description = description;
-        element.tag = tag;
+        newNotes[index].title = title;
+        newNotes[index].description = description;
+        newNotes[index].tag = tag;
+        break;
       }
+      setNotes(newNotes);
     }
   };
 
@@ -87,7 +96,9 @@ const NoteState = (props) => {
           "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjYxMTI2ZWJmMGRkNDBhZjNjM2RlOTE3In0sImlhdCI6MTcxMjQzNjI2OH0.crBhNUSuxIa101djWuN6Nn2wFCB3ZkiaQVSP-I9Y2gY",
       },
     });
-    const json = response.json();
+    //TODO
+    const json = await response.json();
+    console.log(json);
 
     // Logic to delete in client
     const notesAfterDeletion = notes.filter((note) => {
