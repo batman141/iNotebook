@@ -19,18 +19,21 @@ router.post(
     }),
   ],
   async (req, res) => {
+    // shows whether the user is created successfully
+    let success = false;
     // If there are errors, return bad request and errors
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+      return res.status(400).json({ success, errors: errors.array() });
     }
     try {
       //Check whether the user with this email exists already
       let user = await User.findOne({ email: req.body.email });
       if (user) {
-        return res
-          .status(400)
-          .json({ error: "Sorry a user with this email already exists" });
+        return res.status(400).json({
+          success,
+          error: "Sorry a user with this email already exists",
+        });
       }
 
       // Securing password using bcryptjs
@@ -48,7 +51,9 @@ router.post(
         user: { id: user.id },
       };
       const authtoken = jwt.sign(data, JWT_SECRET);
-      res.json({ authtoken }); //No need to write {authtoken: authtoken} in ES6
+
+      success = true;
+      res.json({ success, authtoken }); //No need to write {authtoken: authtoken} in ES6
     } catch (error) {
       console.error(error.message);
       res.status(500).send("Internal Server Error");
@@ -64,7 +69,7 @@ router.post(
     body("password", "Password cannot be blank").exists(),
   ],
   async (req, res) => {
-    // shows whether the user logged in successfully
+    // shows whether the user logged in successfully. lwt used because success can change, no const
     let success = false;
     // If there are errors, return bad request and errors
     const errors = validationResult(req);
