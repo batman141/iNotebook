@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const Signup = () => {
+const Signup = (props) => {
   const [credentials, setCredentials] = useState({
     name: "",
     email: "",
@@ -18,7 +18,10 @@ const Signup = () => {
 
     // Check if pwd, cpwd match, then move forward
     if (password !== cpassword) {
-      alert("Passwords don't match");
+      props.showAlert(
+        "Passwords don't match. Please re-enter correct password",
+        "danger"
+      );
       return;
     }
 
@@ -30,16 +33,18 @@ const Signup = () => {
       body: JSON.stringify({ name, email, password }),
     });
 
-    //TODO
     const json = await response.json();
-    console.log(json);
 
     if (json.success) {
       // Save the authtoken and redirect
       localStorage.setItem("token", json.authtoken);
       navigate("/");
+      props.showAlert(
+        `Welcome ${name}! Your account has been created successfully`,
+        "success"
+      );
     } else {
-      alert(`Invalid information, user ${name} not created`);
+      props.showAlert("Invalid information, user not created", "danger");
     }
   };
 
