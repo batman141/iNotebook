@@ -2,13 +2,20 @@ import { React, useContext, useEffect, useRef, useState } from "react";
 import noteContext from "../context/notes/noteContext";
 import Noteitem from "./Noteitem";
 import Addnote from "./Addnote";
+import { useNavigate } from "react-router-dom";
 
 const Notes = (props) => {
   const context = useContext(noteContext);
   const { notes, getNotes, editNote } = context;
+  let navigate = useNavigate();
+
   useEffect(() => {
-    getNotes();
-    // eslint-disable-next-line
+    if (localStorage.getItem("token")) {
+      getNotes();
+      // eslint-disable-next-line
+    } else {
+      navigate("/login");
+    }
   }, []);
 
   // New State for note to be updated, different from state of note pool from get notes
@@ -146,16 +153,22 @@ const Notes = (props) => {
 
       <div className="row my-3">
         <h1>Your Notes</h1>
-        {notes.map((note) => {
-          return (
-            <Noteitem
-              key={note._id}
-              updateNote={updateNote}
-              note={note}
-              showAlert={props.showAlert}
-            />
-          );
-        })}
+        {notes.length !== 0 &&
+          notes.map((note) => {
+            return (
+              notes.length !== 0 && (
+                <Noteitem
+                  key={note._id}
+                  updateNote={updateNote}
+                  note={note}
+                  showAlert={props.showAlert}
+                />
+              )
+            );
+          })}
+        {notes.length === 0 && (
+          <div className="container">No notes to display</div>
+        )}
       </div>
     </>
   );
